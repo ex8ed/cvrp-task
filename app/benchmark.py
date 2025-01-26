@@ -20,10 +20,10 @@ class CVRPSolver:
             if filename.endswith(".vrp"):
                 vrp_path = os.path.join(directory, filename)
                 sol_path = os.path.join(directory, filename.replace(".vrp", ".sol"))
-                
+
                 instance = CVRPInstance(vrp_path)
                 optimal = self._parse_optimal(sol_path)
-                
+
                 start_time = time.time()
                 dm = DistanceMatrix(instance)
                 solution = tabu_search(
@@ -33,7 +33,7 @@ class CVRPSolver:
                     tabu_tenure=self.tabu_tenure
                 )
                 elapsed = time.time() - start_time
-                
+
                 result = BenchmarkResult()
                 result.instance_name = instance.name
                 result.problem_type = instance.problem_type
@@ -41,14 +41,16 @@ class CVRPSolver:
                 result.found_cost = solution.cost()
                 result.execution_time = elapsed
                 result.iterations = self.max_iter
-                
+                result.num_vehicles = solution.get_num_vehicles()  # Количество автомобилей
+                result.vehicle_loads = solution.get_vehicle_loads()  # Загрузка каждого автомобиля
+
                 if optimal and optimal.cost:
                     result.optimal_cost = optimal.cost
                     if optimal.cost > 0:
                         result.deviation_pct = 100 * (result.found_cost - optimal.cost) / optimal.cost
-                
+
                 self.results.append(result)
-        
+
         self._save_results(output_csv)
 
     def _parse_optimal(self, sol_path: str) -> Optional[CVROptimalSolution]:
@@ -65,9 +67,9 @@ class CVRPSolver:
             writer.writerow([
                 'Instance', 'Type', 'Dimension',
                 'Optimal Cost', 'Found Cost', 'Deviation (%)',
-                'Time (s)', 'Iterations'
+                'Time (s)', 'Iterations', 'Num Vehicles', 'Vehicle Loads'
             ])
-            
+
             for result in self.results:
                 writer.writerow([
                     result.instance_name,
@@ -77,5 +79,7 @@ class CVRPSolver:
                     f"{result.found_cost:.2f}",
                     f"{result.deviation_pct:.2f}" if result.deviation_pct is not None else 'N/A',
                     f"{result.execution_time:.2f}",
-                    result.iterations
+                    result.iterations,
+                    result.num_vehicles,
+                    result.vehicle_loads
                 ])

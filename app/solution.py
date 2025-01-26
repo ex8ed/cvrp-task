@@ -27,6 +27,15 @@ class CVRPSolution:
     def copy(self):
         return CVRPSolution([r.copy() for r in self.routes], self.instance, self.dm)
 
+    def get_vehicle_loads(self) -> List[int]:
+        """Возвращает список загрузок для каждого автомобиля."""
+        return [sum(self.instance.demands[node] for node in route) for route in self.routes]
+
+    def get_num_vehicles(self) -> int:
+        """Возвращает количество использованных автомобилей."""
+        return len(self.routes)
+
+
 def initial_solution(instance: CVRPInstance, dm: DistanceMatrix) -> CVRPSolution:
     unvisited = list(instance.demands.keys())
     unvisited.remove(instance.depot)
