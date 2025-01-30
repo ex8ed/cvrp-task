@@ -17,7 +17,6 @@ class TabuSearch:
         self.tabu_list = deque(maxlen=tabu_tenure)
     
     def diversify(self, solution: CVRPSolution) -> CVRPSolution:
-        """Случайное перемещение 3 клиентов между маршрутами"""
         new_routes = [r.copy() for r in solution.routes]
         for _ in range(3):
             if len(new_routes) < 2:
@@ -32,7 +31,6 @@ class TabuSearch:
         return CVRPSolution(new_routes, self.instance, self.dm)
     
     def get_move_signature(self, old: CVRPSolution, new: CVRPSolution) -> tuple:
-        """Идентификация хода через хэш маршрутов"""
         return tuple(tuple(route) for route in new.routes)
     
     def solve(self) -> CVRPSolution:

@@ -72,5 +72,5 @@ class BenchmarkResult:
         self.deviation_pct: Optional[float] = None
         self.execution_time: Optional[float] = None
         self.iterations = 0
-        self.num_vehicles: Optional[int] = None  # Количество автомобилей
-        self.vehicle_loads: Optional[List[int]] = None  # Загрузка каждого автомобиля
+        self.num_vehicles: Optional[int] = None 
+        self.vehicle_loads: Optional[List[int]] = None

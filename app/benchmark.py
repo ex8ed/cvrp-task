@@ -41,8 +41,8 @@ class CVRPSolver:
                 result.found_cost = solution.cost()
                 result.execution_time = elapsed
                 result.iterations = self.max_iter
-                result.num_vehicles = solution.get_num_vehicles()  # Количество автомобилей
-                result.vehicle_loads = solution.get_vehicle_loads()  # Загрузка каждого автомобиля
+                result.num_vehicles = solution.get_num_vehicles()
+                result.vehicle_loads = solution.get_vehicle_loads()
 
                 if optimal and optimal.cost:
                     result.optimal_cost = optimal.cost

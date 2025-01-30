@@ -11,7 +11,6 @@ def is_valid(solution: CVRPSolution) -> bool:
 
 
 def repair(solution: CVRPSolution) -> CVRPSolution:
-    """Репарация маршрутов с превышением грузоподъемности"""
     repaired_routes = []
     for route in solution.routes:
         current_load = 0
